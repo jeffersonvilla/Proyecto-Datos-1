@@ -13,22 +13,20 @@ public class Ordenamiento {
     }
     
     /*
-    * QuickSort recursivo
+    * QuickSort recursivo  O(n^2) con c = 1/3700000000
+    * T(n)= c n^2, para n = 100'000.000 toma 45 min
+    * para n = 10'000.000 toma 30 segundos
+    * mejor que O(n)
     */
     public static void quick(LL list, NodoLL a, NodoLL b){
-        NodoLL piv = a;
-        
-        //condicion de parada
-        
-        // No cambia el pivote a traves de las recursioness
-        if(!(a.equals(b)&&!b.equals(a.next()))){
+        NodoLL piv;        
+        if(!a.equals(b)&&!a.equals(b.next())&&b!=null){
             piv = pivote(list, a, b);
-            System.out.println("piv "+ piv.toString());
-            System.out.println("1");
-            quick(list, a, piv);
-            System.out.println("2");
-            quick(list, piv.next(), b);            
-        }
+            if(a!= null && piv.last()!= null)
+                quick(list, a, piv.last());      
+            if(piv!=null && b != null)
+                quick(list, piv, b);            
+        }else if(b.equals(a.next()))if((b.x())<(a.x()))list.cambio(a, b);
     }
         
     /*
@@ -38,23 +36,17 @@ public class Ordenamiento {
         NodoLL q = a;
         NodoLL p = a.last();
         while(!q.equals(b)){
-            if(abs(q.x()) <= abs(b.x())){
-                p = (p == null)? a: p.next();
-               // list.cambio(p, q);
-               // NodoLL aux = p;
-               // p = q;
-               // q = aux;
-            }
-            System.out.println("p "+p.toString());
-            System.out.println("q "+q.toString());
+            if((q.x()) <= (b.x())){
+                if(p == null) p = a;
+                else p = p.next();
+                list.cambiovalor(p, q);
+            }            
             q = q.next();            
         }
-        p = p.next();
-        list.cambio(p, q);     
-        list.toString();
-        return q;        
+        if(p == null) p = a;
+        else p = p.next();
+        list.cambiovalor(p, q);     
+        return p;        
     }
-    
-    private static double abs(double n){return n>0? n:-n;}
     
 }

@@ -237,6 +237,15 @@ public class LL {
     }
     
     /*
+    * Intercambia los valores de los nodos
+    */
+    public void cambiovalor(NodoLL p, NodoLL q){
+        NodoLL aux = new NodoLL(p);
+        p.punto(q.x(), q.y(), q.z());
+        q.punto(aux.x(), aux.y(), aux.z());
+    }
+    
+    /*
     * Intercambia de posicion en la lista los nodos a y b
     */
     public void cambio(NodoLL p, NodoLL q){cambio(p, q, false);}
@@ -246,7 +255,9 @@ public class LL {
     */
     private void cambio(NodoLL p, NodoLL q, boolean changed){
         //p es el primero, p y q discontinuos
-        if(p.equals(this.raiz.next()) && !q.equals(this.cola.last()) 
+        if(p.equals(q))return;
+            
+        else if(p.equals(this.raiz.next()) && !q.equals(this.cola.last()) 
                 && !q.equals(p.next())){
             NodoLL aux = p.next();
             p.next(q.next());
@@ -315,6 +326,31 @@ public class LL {
             q.lastNull();
             this.raiz.next(q);
             this.cola.last(p);
+            q.next(p);
+            p.last(q);
+        }
+        
+        //p y q en medio, p y q discontinuos
+        else if(!p.equals(this.raiz.next()) && !q.equals(this.cola.last())
+                &&!q.equals(p.next())){
+            p.last().next(q);
+            p.next().last(q);
+            q.last().next(p);
+            q.next().last(p);
+            NodoLL aux = q.last();
+            q.last(p.last());
+            p.last(aux);
+            aux = p.next();
+            p.next(q.next());
+            q.next(aux);
+        }
+        //p y q en medio, p y q continuos
+        else if(!p.equals(this.raiz.next()) && !q.equals(this.cola.last())
+                && q.equals(p.next())){
+            p.last().next(q);
+            q.next().last(p);
+            q.last(p.last());
+            p.next(q.next());
             q.next(p);
             p.last(q);
         }

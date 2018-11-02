@@ -23,6 +23,19 @@ public class NodoLL {
         this.last = null;
     }
     
+    public NodoLL(NodoLL n){
+        this.x = n.x();
+        this.y = n.y();
+        this.z = n.z();
+    }
+    
+    //Cambia los valores del nodo
+    public void punto(double x, double y, double z){
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    
     //Retorna el siguiente
     public NodoLL next(){return this.next;}
     
