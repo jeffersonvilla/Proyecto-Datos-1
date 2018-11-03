@@ -222,6 +222,24 @@ public class LL {
         }else{System.out.println("No hay elementos en la lista");}
     }
     
+    
+    /*
+    * Muestra lista en orden
+    */
+    public void showList(int n){
+        if (n>this.size) showList();
+        else if(this.size != 0){
+            System.out.println("En orden");
+            System.out.println("size: "+this.size);
+            NodoLL p = this.raiz.next();
+            System.out.println("info(p, "+0+"):"+p.toString());
+            for(int i = 0; i< n-1 ; i++){
+                p = p.next();
+                System.out.println("info(p, "+(i+1)+"): "+p.toString());
+            }        
+        }else{System.out.println("No hay elementos en la lista");}
+    }
+    
     /*
     * Muestra lista en orden reverso
     */
