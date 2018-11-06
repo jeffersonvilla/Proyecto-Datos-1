@@ -13,12 +13,18 @@ public class Project {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //En quadtree
-        //Inserto elementos en quadtree        
-        //Busco prediccion de colisiones
+        //testQT();
+        //testLL();
         
-        
-        
+    }
+    
+    private static void testQT(){        
+        QuadTree abejas = new QuadTree(); //Creo QuadTree
+        insertarQuad(abejas); //Inserto elementos en QuadTree
+        abejas.colisiones("colisionesq"); //Busco colisiones proximas
+    }
+    
+    private static void testLL(){
         //Creo LinkedList
         LL abejas = new LL();              
         
@@ -40,7 +46,11 @@ public class Project {
         archivoLista(abejas, "D:\\colisiones.txt");
         //abejas.showList();
         System.out.println(abejas.size());
-        
+    }
+    
+    private static void insertarQuad(QuadTree qt){
+        //Abro archivo 
+        //Inserto elementos en Quad tree
     }
     
     /**
