@@ -82,16 +82,9 @@ public class QuadTree {
         SW = new QuadTree();
     }
     
-    
-    public void colisiones(String archivo){
-        //Busca colisiones proximas 
-        //Escribe colisiones en archivo
-        
-        //Centro con los cuadrantes
-        
-    }
-    
     public int color(){return this.color;}
+    
+    public NodoT punto(){return this.punto;}
     
     public QuadTree NE(){return this.NE;}
     

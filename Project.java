@@ -2,6 +2,8 @@ package project;
 
 import java.lang.Math;
 import java.io.*;
+import java.util.LinkedList;
+import java.util.Iterator;
 
 /**
  *
@@ -14,7 +16,7 @@ public class Project {
      */
     public static void main(String[] args) {
         testQT();
-        //testLL();
+        testLL();
         
        /* QuadTree abejas = new QuadTree();
         abejas.insertar(0, 0, 0);
@@ -37,7 +39,7 @@ public class Project {
     private static void testQT(){        
         QuadTree abejas = new QuadTree(); //Creo QuadTree
         //Inserto elementos en QuadTree
-        insertarQuad(abejas, "D:\\10abejas.txt"); 
+        insertarQuad(abejas, "D:\\1000000abejas.txt"); 
         System.out.println(abejas.posorden());
         //System.out.println("nivel "+abejas.nivel());
         /*System.out.println("NE"+abejas.NE().color());
@@ -45,7 +47,7 @@ public class Project {
         System.out.println("SE"+abejas.SE().color());
         System.out.println("SW"+abejas.SW().color());*/
         //abejas.preorden();
-        abejas.colisiones("colisionesq"); //Busco colisiones proximas
+        colisionesQuad(abejas,"colisionesq"); //Busco colisiones proximas
     }
     
     private static void testLL(){
@@ -124,6 +126,42 @@ public class Project {
            }
         }
         
+    }
+    
+    private static void colisionesQuad(QuadTree q, String name){
+        LinkedList<NodoT> n = new LinkedList<>();
+        colisiones(q, n);
+        //Escribo lista en archivo
+        
+        System.out.println(n.size());
+    }
+    
+    private static void colisiones(QuadTree q, LinkedList<NodoT> n){
+        boolean added = false;
+        if(q.color() != 0){//Si el tree no esta vacio
+            if(q.color() != 2){ //Si el tree tiene hijos
+                try{if(distancia(q.punto(),q.NE().punto())<= 100){
+                   // n.addFirst(q.NE().punto());
+                    if(!added){ n.addFirst(q.punto()); added = true;}
+                }}catch(NullPointerException e){}
+                try{if(distancia(q.punto(),q.NW().punto())<= 100){
+                   // n.addFirst(q.NW().punto());
+                    if(!added){ n.addFirst(q.punto()); added = true;}
+                }}catch(NullPointerException e){}
+                try{if(distancia(q.punto(),q.SE().punto())<= 100){
+                   // n.addFirst(q.SE().punto());
+                    if(!added){ n.addFirst(q.punto()); added = true;}
+                }}catch(NullPointerException e){}
+                try{if(distancia(q.punto(),q.SW().punto())<= 100){
+                   // n.addFirst(q.SW().punto());
+                    if(!added){ n.addFirst(q.punto()); added = true;}
+                }}catch(NullPointerException e){}
+                try{colisiones(q.NE(), n);}catch(NullPointerException e){}
+                try{colisiones(q.NW(), n);}catch(NullPointerException e){}
+                try{colisiones(q.SE(), n);}catch(NullPointerException e){}
+                try{colisiones(q.SW(), n);}catch(NullPointerException e){}
+            }else return;
+        }else return;
     }
     
     /**
