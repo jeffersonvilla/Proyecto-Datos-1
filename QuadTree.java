@@ -26,6 +26,8 @@ public class QuadTree {
         this.color = 2;
     }
     
+    public void insertar(NodoT n){insertar(n.x(), n.y(), n.z());}
+    
     public void insertar(double x, double y, double z){        
         //Quadtree dividido
         if(this.color == 1){
@@ -65,6 +67,10 @@ public class QuadTree {
         if(x > punto.x() && y < punto.y()) return 4;
         if(x < punto.x() && y > punto.y()) return 2;
         if(x < punto.x() && y < punto.y()) return 3;
+        if(x == punto.x() && y > punto.y()) return 1;
+        if(x == punto.x() && y < punto.y()) return 3;
+        if(y == punto.y() && x > punto.x()) return 2;
+        if(y == punto.y() && x < punto.x()) return 4;
         return 0;
     }
     
@@ -84,4 +90,67 @@ public class QuadTree {
         //Centro con los cuadrantes
         
     }
+    
+    public int color(){return this.color;}
+    
+    public QuadTree NE(){return this.NE;}
+    
+    public QuadTree NW(){return this.NW;}
+    
+    public QuadTree SE(){return this.SE;}
+    
+    public QuadTree SW(){return this.SW;}
+    
+    public void preorden(){
+        if(this.punto != null){
+            System.out.println("Centro");
+            System.out.println(this.punto.toString());
+            if(this.color == 1){
+                System.out.println("NE");
+                NE.preorden(); 
+                System.out.println("NW");
+                NW.preorden(); 
+                System.out.println("SW");
+                SW.preorden(); 
+                System.out.println("SE");
+                SE.preorden();
+            }
+        }
+    }
+    
+    public int posorden(){
+        if(this.punto != null){
+            //System.out.println("Centro");
+            //System.out.println(this.punto.toString());
+            if(this.color == 1){
+                return 
+                //System.out.println("NE");
+                NE.posorden()+
+                //System.out.println("NW");
+                NW.posorden()+ 
+                //System.out.println("SW");
+                SW.posorden()+ 
+                //System.out.println("SE");
+                SE.posorden() + 1;
+            }else return 1;
+        }else return 0;
+    }
+     
+    public int nivel(){
+        if(this.punto != null){
+            //System.out.println("Centro");
+            //System.out.println(this.punto.toString());
+            if(this.color == 1){
+                return 
+                //System.out.println("NE");
+                Math.max(Math.max(NE.nivel(),
+                //System.out.println("NW");
+                NW.nivel()),Math.max(
+                //System.out.println("SW");
+                SW.nivel(), 
+                //System.out.println("SE");
+                SE.nivel())) + 1;
+            }else return 1;
+        }else return 1;
+    } 
 }
