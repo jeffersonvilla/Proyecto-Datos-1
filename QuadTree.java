@@ -111,20 +111,20 @@ public class QuadTree {
         }
     }
     
-    public int posorden(){
+    public int size(){
         if(this.punto != null){
             //System.out.println("Centro");
             //System.out.println(this.punto.toString());
             if(this.color == 1){
                 return 
                 //System.out.println("NE");
-                NE.posorden()+
+                NE.size()+
                 //System.out.println("NW");
-                NW.posorden()+ 
+                NW.size()+ 
                 //System.out.println("SW");
-                SW.posorden()+ 
+                SW.size()+ 
                 //System.out.println("SE");
-                SE.posorden() + 1;
+                SE.size() + 1;
             }else return 1;
         }else return 0;
     }

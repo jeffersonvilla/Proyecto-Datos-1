@@ -15,63 +15,54 @@ public class Project {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        System.out.println("En QuadTree");        
         testQT();
-        testLL();
-        
-       /* QuadTree abejas = new QuadTree();
-        abejas.insertar(0, 0, 0);
-        abejas.insertar(1, 1, 0);
-        abejas.insertar(1, -1, 0);
-        abejas.insertar(-1, 1, 0);
-        abejas.insertar(-1, -1, 0);
-        abejas.insertar(-1, 2, 0);
-        abejas.insertar(-1, 0.5, 0);
-        abejas.preorden();*/
-       /*NodoT a = new NodoT(-75.5796440222, 6.31091326448, 1687.9);
-       NodoT c = new NodoT(-75.5443845591, 6.30633535292, 1415.34);
-       NodoT b = new NodoT(-75.5439345586, 6.30588535247, 1395.34);
-       System.out.println(distancia(a, b));*/
-       
-       
-       
+        System.out.println("\nEn LinkedList");        
+        testLL();        
     }
     
+    //Test algoritmo en QuadTree
     private static void testQT(){        
         QuadTree abejas = new QuadTree(); //Creo QuadTree
         //Inserto elementos en QuadTree
-        insertarQuad(abejas, "D:\\1000000abejas.txt"); 
-        System.out.println(abejas.posorden());
-        //System.out.println("nivel "+abejas.nivel());
-        /*System.out.println("NE"+abejas.NE().color());
-        System.out.println("NW"+abejas.NW().color());
-        System.out.println("SE"+abejas.SE().color());
-        System.out.println("SW"+abejas.SW().color());*/
-        //abejas.preorden();
-        colisionesQuad(abejas,"colisionesq"); //Busco colisiones proximas
+        insertarArchivoEnQuadTree(abejas, "C:\\temp\\Downloads\\10000abejas.txt"); 
+        //Confirmamos cantidad de abejas en el quadtree
+        System.out.println("Hay "+abejas.size()+" abejas en el quadtree");
+        
+        //Busco colisiones proximas
+        long startTime1 = System.nanoTime();
+        colisionesQuad(abejas,"C:\\temp\\Downloads\\colisionesq.txt"); 
+        long endTime1 = System.nanoTime();
+        System.out.println("Duración: " + (endTime1-startTime1)/1e6 + " ms");
+        
+        QuadTree colisiones = new QuadTree();
+        //Comprobamos las colisiones
+        insertarArchivoEnQuadTree(colisiones,"C:\\temp\\Downloads\\colisionesq.txt");
+        //Imprimimos la cantidad de colisiones
+        System.out.println("Hay "+colisiones.size()+" colisiones proximas");
     }
     
-    private static void testLL(){
-        //Creo LinkedList
-        LL abejas = new LL();              
-        
-        //Inserto elementos
-        //archivoLista(abejas, "D:\\1000000abejas.txt");
-        
-        //System.out.println(abejas.size());
-        
-        //Ordeno respecto a x
-        /*long startTime = System.nanoTime();   
+    //Test algoritmo en Colisiones
+    private static void testLL(){        
+        LL abejas = new LL();//Creo LinkedList        
+        //Inserto elementos en LinkedList
+        insertarArchivoEnLista(abejas, "C:\\temp\\Downloads\\10000abejas.txt");        
+        //Comprobamos tamaño de la lista
+        System.out.println("Hay "+abejas.size()+" abejas en la lista");
+        //Ordeno respecto a x  
         Ordenamiento.quickSort(abejas);
-        long endTime = System.nanoTime();
-        //abejas.showList(10000);
-        System.out.println("Duración: " + (endTime-startTime)/1e6 + " ms");*/
         
-        //Comparo en rango e imprimo
-        //listaArchivo(abejas);
+        //Busco colisiones e imprimo
+        long startTime2 = System.nanoTime();
+        escribeListaEnArchivo(abejas,"C:\\temp\\Downloads\\" ,"c.txt");
+        long endTime2 = System.nanoTime();
+        System.out.println("Duración: " + (endTime2-startTime2)/1e6 + " ms");
         
-        archivoLista(abejas, "D:\\colisiones.txt");
-        //abejas.showList();
-        System.out.println(abejas.size());
+        LL colisiones = new LL();
+        //Comprobamos las colisiones
+        insertarArchivoEnLista(colisiones, "C:\\temp\\Downloads\\c.txt");
+        //Mostamos la cantidad
+        System.out.println("Hay "+colisiones.size()+" colisiones proximas");
     }
     
     /**
@@ -80,7 +71,7 @@ public class Project {
      * @autor desconocido
      * @url http://chuwiki.chuidiang.org/index.php?title=Lectura_y_Escritura_de_Ficheros_en_Java
      */
-    private static void insertarQuad(QuadTree qt,String name){
+    private static void insertarArchivoEnQuadTree(QuadTree qt,String name){
         //Abro archivo 
         //Inserto elementos en Quad tree
         File archivo = null;
@@ -132,8 +123,8 @@ public class Project {
         LinkedList<NodoT> n = new LinkedList<>();
         colisiones(q, n);
         //Escribo lista en archivo
-        
-        System.out.println(n.size());
+        escribeListaEnArchivo(n, name);
+        //System.out.println(n.size());
     }
     
     private static void colisiones(QuadTree q, LinkedList<NodoT> n){
@@ -171,20 +162,21 @@ public class Project {
      * @autor desconocido
      * @url http://chuwiki.chuidiang.org/index.php?title=Lectura_y_Escritura_de_Ficheros_en_Java
      */
-    private static void listaArchivo(LL list){
+    //Implementacion para LL
+    private static void escribeListaEnArchivo(LL list, String direccion, String nombre){
         FileWriter fichero = null;
         PrintWriter pw = null;
         try
         {
-            fichero = new FileWriter("D:\\colisiones.txt");
+            fichero = new FileWriter(direccion+nombre);
             pw = new PrintWriter(fichero);
 
         /*
          * @autor Jefferson
          */
         //Incio de mi codigo
-        long startTime = System.nanoTime();   
-        for(NodoLL i = list.primero(); i!=list.fin();i = i.next()){
+        //long startTime = System.nanoTime();   
+        for(NodoLL i = list.primero(); i!=list.fin().last();i = i.next()){
             NodoLL k = i.next(); 
             if(k == null) break; 
             if(distancia(i, k)<= 100){ 
@@ -193,8 +185,53 @@ public class Project {
                 pw.println(i.x()+","+i.y()+","+i.z());
              }
         }
-        long endTime = System.nanoTime();
-        System.out.println("Duración: " + (endTime-startTime)/1e6 + " ms");
+        //long endTime = System.nanoTime();
+        //System.out.println("Duración: " + (endTime-startTime)/1e6 + " ms");
+        //Fin de mi codigo    
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+        }
+    }
+    
+    /**
+     * Recorre lista comparando cada par de nodos consecutivos i, k
+     * e imprimiendo en una archivo cuando d(i, k) < 100
+     * 
+     * @autor desconocido
+     * @url http://chuwiki.chuidiang.org/index.php?title=Lectura_y_Escritura_de_Ficheros_en_Java
+     */
+    //Implementacion para LinkedList
+    private static void escribeListaEnArchivo(LinkedList<NodoT> list, String nombre){
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        try
+        {
+            fichero = new FileWriter(nombre);
+            pw = new PrintWriter(fichero);
+
+        /*
+         * @autor Jefferson
+         */
+        //Incio de mi codigo
+        //long startTime = System.nanoTime(); 
+        NodoT k = list.getFirst();
+        for(NodoT i :list){
+            if(i == k)continue;
+            if(distancia(i, k)<= 100)pw.println(i.x()+","+i.y()+","+i.z());
+            k = i;
+        }
+        //long endTime = System.nanoTime();
+        //System.out.println("Duración: " + (endTime-startTime)/1e6 + " ms");
         //Fin de mi codigo    
 
         } catch (Exception e) {
@@ -218,7 +255,7 @@ public class Project {
      * @autor desconocido
      * @url http://chuwiki.chuidiang.org/index.php?title=Lectura_y_Escritura_de_Ficheros_en_Java
      */
-    private static void archivoLista(LL list, String name){
+    private static void insertarArchivoEnLista(LL list, String name){
       File archivo = null;
       FileReader fr = null;
       BufferedReader br = null;
