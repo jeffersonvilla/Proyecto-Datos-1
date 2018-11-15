@@ -1,8 +1,10 @@
-package project;
+package detector;
+
+import java.util.LinkedList;
 
 /**
  *
- * @author 
+ * @author Grupo proyecto datos 1
  */
 public class QuadTree {
     
@@ -44,6 +46,37 @@ public class QuadTree {
             this.color = 1;
             insert(x, y, z);
         }                                
+    }
+    
+    /*
+     * Detecta abejas a menos de 100m( En quadtree) y las guarda en la lista
+     */
+    public static void colisiones(QuadTree q, LinkedList<NodoT> n){
+        boolean added = false;
+        if(q.color() != 0){//Si el tree no esta vacio
+            if(q.color() != 2){ //Si el tree tiene hijos
+                try{if(Calc.distancia(q.punto(),q.NE().punto())<= 100){
+                   // n.addFirst(q.NE().punto());
+                    if(!added){ n.addFirst(q.punto()); added = true;}
+                }}catch(NullPointerException e){}
+                try{if(Calc.distancia(q.punto(),q.NW().punto())<= 100){
+                   // n.addFirst(q.NW().punto());
+                    if(!added){ n.addFirst(q.punto()); added = true;}
+                }}catch(NullPointerException e){}
+                try{if(Calc.distancia(q.punto(),q.SE().punto())<= 100){
+                   // n.addFirst(q.SE().punto());
+                    if(!added){ n.addFirst(q.punto()); added = true;}
+                }}catch(NullPointerException e){}
+                try{if(Calc.distancia(q.punto(),q.SW().punto())<= 100){
+                   // n.addFirst(q.SW().punto());
+                    if(!added){ n.addFirst(q.punto()); added = true;}
+                }}catch(NullPointerException e){}
+                try{colisiones(q.NE(), n);}catch(NullPointerException e){}
+                try{colisiones(q.NW(), n);}catch(NullPointerException e){}
+                try{colisiones(q.SE(), n);}catch(NullPointerException e){}
+                try{colisiones(q.SW(), n);}catch(NullPointerException e){}
+            }else return;
+        }else return;
     }
     
     private void insert(double x, double y, double z){
@@ -111,20 +144,20 @@ public class QuadTree {
         }
     }
     
-    public int size(){
+    public int posorden(){
         if(this.punto != null){
             //System.out.println("Centro");
             //System.out.println(this.punto.toString());
             if(this.color == 1){
                 return 
                 //System.out.println("NE");
-                NE.size()+
+                NE.posorden()+
                 //System.out.println("NW");
-                NW.size()+ 
+                NW.posorden()+ 
                 //System.out.println("SW");
-                SW.size()+ 
+                SW.posorden()+ 
                 //System.out.println("SE");
-                SE.size() + 1;
+                SE.posorden() + 1;
             }else return 1;
         }else return 0;
     }

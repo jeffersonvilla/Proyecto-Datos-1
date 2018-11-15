@@ -1,8 +1,8 @@
-package project;
+package detector;
 
 /**
  *
- * @author 
+ * @author Grupo proyecto datos 1
  */
 public class NodoT {                    
     
